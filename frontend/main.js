@@ -45,7 +45,7 @@ function endLoading(id) {
 }
 
 async function draw(x, y, w, h) {
- 
+
   var canvas = document.getElementById("canv2");
   let ctx = canvas.getContext("2d");
   ctx.beginPath();
@@ -65,8 +65,10 @@ async function detectWithJs() {
   const detectionsForSize = faceapi.resizeResults(detections, { width: input.width, height: input.height })
 
   // draw them into a canvas
-  let box = detectionsForSize[0]._box;
-  draw(box._x, box._y, box._width, box._height);
+  for (let i = 0; i < detectionsForSize.length; i++) {
+    let box = detectionsForSize[i]._box;
+    draw(box._x, box._y, box._width, box._height);
+  }
   endLoading("js");
 
 }
