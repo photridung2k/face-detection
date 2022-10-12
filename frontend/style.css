@@ -1,0 +1,76 @@
+body {
+    margin: 25px;
+    font-family: verdana;
+}
+
+h1 {
+    color: darkslategray;
+}
+
+p {
+    font-size: 12pt;
+    color: black;
+}
+
+
+canvas {
+    margin-top: 30px;
+    height: 175px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
+}
+
+input {
+    font-family: verdana;
+    font-size: 12pt;
+}
+
+.wrapper {
+    width: 1300px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.arrow {
+    cursor: pointer;
+    height: 40px;
+    position: relative;
+    line-height: 2.5em;
+    padding-left: 1em;
+    padding-right: 2em;
+    background: black;
+    margin-top: 10px;
+    color: white;
+    margin-right: 200px;
+    display: none;
+}
+
+.arrow:after {
+    content: "";
+    position: absolute;
+    border-bottom: 20px solid transparent;
+    border-top: 20px solid transparent;
+    height: 0px;
+    width: 0px;
+    margin-right: -20px;
+    right: 0;
+    border-left: 20px solid black;
+}
+
+.arrow:hover,
+.arrow:active {
+    background: yellow;
+    color: black;
+}
+
+.arrow:active::after,
+.arrow:hover::after,
+.arrow-active::after {
+    border-left: 20px solid yellow;
+}
+
+.arrow-active{
+    background-color: yellow;
+    color: black;
+}
