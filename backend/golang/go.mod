@@ -12,4 +12,7 @@ require (
 	go.uber.org/multierr v1.6.0 // indirect
 )
 
-require gocv.io/x/gocv v0.31.0
+require (
+	github.com/rs/cors v1.8.2
+	gocv.io/x/gocv v0.31.0
+)

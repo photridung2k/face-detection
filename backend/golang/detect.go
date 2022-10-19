@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"image"
 	"image/color"
 	"image/jpeg"
 	"os"
@@ -13,7 +14,7 @@ import (
 
 const modelFolder string = "../models"
 
-func DetectImage(file string) error {
+func DetectImage(file string) ([]image.Rectangle, error) {
 	xmlFile := filepath.Join(modelFolder, "haarcascade_frontalface_default.xml")
 
 	img := gocv.IMRead(filepath.Join(imageFolder, originalImage), gocv.IMReadColor)
@@ -26,7 +27,7 @@ func DetectImage(file string) error {
 	defer classifier.Close()
 
 	if !classifier.Load(xmlFile) {
-		return errors.New("Error reading cascade file: " + xmlFile)
+		return nil, errors.New("Error reading cascade file: " + xmlFile)
 	}
 
 	rects := classifier.DetectMultiScale(img)
@@ -38,15 +39,15 @@ func DetectImage(file string) error {
 
 	f, err := os.Create(filepath.Join(imageFolder, detectedImage))
 	if err != nil {
-		return err
+		return nil, err
 	}
 	defer f.Close()
 	image, err := img.ToImage()
 	if err != nil {
-		return err
+		return nil, err
 	}
 	if err = jpeg.Encode(f, image, nil); err != nil {
-		return err
+		return nil, err
 	}
-	return nil
+	return rects, nil
 }
