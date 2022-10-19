@@ -1,3 +1,5 @@
+const BASE_URL = 'http://127.0.0.1:5000/'
+
 function upload() {
   var imgcanvas = document.getElementById("canv1");
   var fileinput = document.getElementById("finput");
@@ -38,8 +40,10 @@ function endLoading(id) {
     case "js":
       text = "Detect with javascript"
       break;
+    case "py":
+      text = "Detect with python"
+      break;
     default:
-    // code block
   }
   document.getElementById(id).innerHTML = text;
 }
@@ -55,21 +59,28 @@ async function draw(x, y, w, h) {
   ctx.stroke();
 }
 
-async function detectWithJs() {
-  reloadUI("js");
-  startLoading("js");
-  await faceapi.loadSsdMobilenetv1Model('./models');
-  const input = document.getElementById('canv1');
-  const detections = await faceapi.detectAllFaces(input)
-  // resize the detected boxes in case your displayed image has a different size then the original
-  const detectionsForSize = faceapi.resizeResults(detections, { width: input.width, height: input.height })
+async function detect(type) {
+  reloadUI(type);
+  startLoading(type);
+  const formData = new FormData();
+  const fileinput = document.getElementById("finput");
+  formData.append('image', fileinput.files[0])
 
-  // draw them into a canvas
-  for (let i = 0; i < detectionsForSize.length; i++) {
-    let box = detectionsForSize[i]._box;
-    draw(box._x, box._y, box._width, box._height);
+  const url = `${BASE_URL}detect`
+  const rawResponse = await fetch(url, {
+    method: 'POST',
+    body: formData
+  });
+
+  const response = await rawResponse.json();
+  console.log(response);
+  for (let i = 0; i < response.data.length; i++) {
+    let box = response.data[i];
+    setInterval(() => {
+      draw(box.x, box.y, box.w, box.h);
+    }, 3000)
   }
-  endLoading("js");
+  endLoading(type);
 
 }
 
