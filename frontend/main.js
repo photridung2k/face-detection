@@ -43,6 +43,9 @@ function endLoading(id) {
     case "py":
       text = "Detect with python"
       break;
+    case "go":
+      text = "Detect with golang"
+      break;
     default:
   }
   document.getElementById(id).innerHTML = text;
